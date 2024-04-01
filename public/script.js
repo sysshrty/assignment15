@@ -1,79 +1,158 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const addCraftBtn = document.getElementById("addCraft");
-    const addCraftModal = document.getElementById("add-craft-overlay");
-    const addCraftCloseBtn = document.getElementById("add-craft-close");
-    const addCraftForm = document.getElementById("craft-form");
-    const addCraftPreview = document.getElementById("preview");
-    const addCraftImageInput = document.getElementById("image");
-    const addCraftSuppliesList = document.getElementById("supplies-list");
-
-    addCraftBtn.addEventListener("click", () => {
-        addCraftModal.classList.remove("hidden");
-    });
-
-    addCraftCloseBtn.addEventListener("click", () => {
-        addCraftModal.classList.add("hidden");
-        addCraftForm.reset();
-        addCraftPreview.src = "https://www.placehold.it/200x300";
-        addCraftSuppliesList.innerHTML = "";
-    });
-
-    addCraftImageInput.addEventListener("change", () => {
-        const file = addCraftImageInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                addCraftPreview.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-	function refreshCraftsList(data) {
-		// Update crafts list with new data
-		const craftsList = document.getElementById("crafts");
-		craftsList.innerHTML = "";
-	
-		data.forEach(craft => {
-			// Create craft card
-			const craftCard = document.createElement("div");
-			craftCard.classList.add("craft-card");
-	
-			// Create image element
-			const img = document.createElement("img");
-			img.src = "https://assignment14-hfqa.onrender.com" + craft.image; // Prepend base URL here
-			img.alt = craft.name;
-	
-			// Append image to craft card
-			craftCard.appendChild(img);
-	
-			// Append craft card to crafts list
-			craftsList.appendChild(craftCard);
-		});
+const getCrafts = async () => {
+	try {
+		return (await fetch("./api/crafts")).json();
+	} catch (error) {
+		console.log(error);
+		return "";
 	}
+};
 
-    addCraftForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+const getCraft = (craft) => {
+    const craftImg = document.createElement("img");
+    craftImg.src = "/images/" + craft.image; // Update the URL to point to the correct directory
 
-        // Collect form data
-        const formData = new FormData(addCraftForm);
+	craftImg.onclick = () => {
+		const overlay = document.getElementById("craft-overlay");
+		const modalDiv = document.getElementById("craft-modal");
+		modalDiv.innerHTML = "";
+		const buttonWrap = document.createElement("p");
+		buttonWrap.id = "btn-wrap";
+		const close = document.createElement("button");
+		close.onclick = () => {
+			overlay.classList.add("hidden");
+			modalDiv.classList.add("hidden");
+		};
+		close.innerHTML = "X";
+		buttonWrap.append(close);
+		modalDiv.append(buttonWrap);
+		const flexDiv = document.createElement("div");
+		flexDiv.id =	"flex-div";
+		const imgDiv = document.createElement("div");
+		const flexImg = document.createElement("img");
+		flexImg.src = "./images/" + craft.image;
+		imgDiv.append(flexImg);
+		const textDiv = document.createElement("div");
+		const craftH2 = document.createElement("h2");
+		craftH2.innerHTML = craft.name;
+		textDiv.append(craftH2);
+		const descP = document.createElement("p");
+		descP.innerHTML = craft.description;
+		textDiv.append(descP);
+		const craftH3 = document.createElement("h3");
+		craftH3.innerHTML = "Supplies:";
+		textDiv.append(craftH3);
+		const list = document.createElement("ul");
+		craft.supplies.forEach((supply) => {
+			const item = document.createElement("li");
+			item.innerHTML = supply;
+			list.appendChild(item);
+		});
+		textDiv.append(list);
+		flexDiv.append(imgDiv);
+		flexDiv.append(textDiv);
+		modalDiv.append(flexDiv);
+		overlay.classList.remove("hidden");
+		modalDiv.classList.remove("hidden");
+	};
+	return craftImg;
+};
 
-        // Make a POST request to add craft
-        fetch("/api/crafts", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Close modal and reset form
-            addCraftModal.classList.add("hidden");
-            addCraftForm.reset();
-            addCraftPreview.src = "https://www.placehold.it/200x300";
-            addCraftSuppliesList.innerHTML = "";
+const showCrafts = async () => {
+	const craftsJSON = await getCrafts();
+	const craftDiv = document.getElementById("crafts");
+	craftDiv.innerHTML = "";
+	if (craftsJSON == "") {
+		craftDiv.innerHTML = "The craftpocalypse has happened there are no more crafts";
+		return;
+	}
+	let count = 0;
+	let column = document.createElement("div");
+	column.classList.add("column");
+	craftsJSON.forEach((craft) => {
+		column.append(getCraft(craft));
+		count++;
+		if (count > 6) {
+			craftDiv.append(column);
+			column = document.createElement("div");
+			column.classList.add("column");
+			count = 0;
+		}
+	});
+	craftDiv.append(column);
+};
 
-            // Refresh crafts list
-            refreshCraftsList(data);
-        })
-        .catch(error => console.error("Error adding craft:", error));
+const changeImage = (event) => {
+	const preview = document.getElementById("preview");
+	if (!event.target.files.length) {
+		preview.src = "https://place-hold.it/200x300";
+		return;
+	}
+	preview.src = URL.createObjectURL(event.target.files.item(0));
+};
+
+const addSupply = (event) => {
+    event.preventDefault();
+    const suppliesList = document.getElementById("supplies-list");
+    const supplyInput = document.createElement("input");
+    supplyInput.type = "text";
+    supplyInput.classList.add("supply-input"); // Add this class for styling
+    suppliesList.appendChild(supplyInput);
+};
+
+const resetForm = () => {
+    document.getElementById("craft-form").reset();
+    document.getElementById("supplies-list").innerHTML = "";
+    document.getElementById("preview").src = "https://place-hold.it/200x300";
+};
+
+const openAddCraft = () => {
+    resetForm();
+    const overlay = document.getElementById("add-craft-overlay");
+    const modalDiv = document.getElementById("add-craft-modal");
+    overlay.classList.remove("hidden");
+    modalDiv.classList.remove("hidden");
+};
+
+const closeAddCraft = () => {
+    const overlay = document.getElementById("add-craft-overlay");
+    const modalDiv = document.getElementById("add-craft-modal");
+    overlay.classList.add("hidden");
+    modalDiv.classList.add("hidden");
+    resetForm();
+};
+
+const getSupplies = () => {
+    const suppliesInput = document.querySelectorAll("#supplies-list input");
+    const supplies = [];
+    suppliesInput.forEach((supply) => {
+        supplies.push(supply.value);
     });
-});
+    return supplies;
+};
 
+const submitCraft = async (event) => {
+    event.preventDefault();
+    const form = document.getElementById("craft-form");
+    const formData = new FormData(form);
+    formData.append("supplies", getSupplies().join(",")); // Join supplies array into a string
+    const response = await fetch("/api/crafts", {
+        method: "POST",
+        body: formData
+    });
+    const result = await response.json();
+    if (result.error) {
+        // Handle validation error
+        console.log(result.error);
+        return;
+    }
+    closeAddCraft();
+    showCrafts();
+};
+
+
+showCrafts();
+document.getElementById("addCraft").onclick = openAddCraft;
+document.getElementById("craft-form").onsubmit = submitCraft;
+document.getElementById("add-supply").onclick = addSupply;
+document.getElementById("image").onchange = changeImage;
+document.getElementById("cancel").onclick = closeAddCraft;
