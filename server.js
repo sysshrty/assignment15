@@ -31,7 +31,7 @@ const crafts = [
     },
     {
         _id: 2,
-        name: "images/Character Bookmarks",
+        name: "Character Bookmarks",
         image: "bookmarks.jpeg",
         description: "Create a little birdy bookmark to always remin you were you were",
         supplies: ["yellow construction paper", "orange construction paper", "black construction paper"],

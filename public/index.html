@@ -1,14 +1,16 @@
+<!--sherry-->
 <!DOCTYPE html>
 <html>
 <head>
+	
     <title>Assignment 15</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div id="craft-overlay" class="transparent-overlay hidden">
+    <div id="craft-area" class="transparent-overlay hidden">
         <div id="craft-modal" class="modal hidden"></div>
     </div>
-    <div id="add-craft-overlay" class="transparent-overlay hidden">
+    <div id="craft-add-overlay" class="transparent hidden">
         <div id="add-craft-modal" class="modal hidden">
             <button id="add-craft-close">X</button>
             <form id="craft-form">
@@ -18,7 +20,7 @@
                     </p>
                     <p>
                         <label id="image-label" for="image">Select an Image</label>
-                        <input type="file" id="image" name="image" accept="image/*" required />
+                        <input type="file" id="image" name="image" accept="image/month" required />
                     </p>
                 </div>
                 <div id="text-content">
@@ -59,3 +61,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+

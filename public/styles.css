@@ -1,4 +1,14 @@
-* {
+/*focus on transparent*/
+#transparent {
+	background: rgba(128, 128, 128, 0.3);
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	position: fixed;
+	transition: opacity 0.25s ease;
+	z-index: 1029;
+}
+month {
 	box-sizing: border-box;
 }
 
@@ -14,21 +24,12 @@ header {
 	display: none;
 }
 
+
+
 button {
 	background: none;
 	border: none;
 }
-
-#transparent-overlay {
-	background: rgba(128, 128, 128, 0.3);
-	width: 100%;
-	height: 100%;
-	margin: auto;
-	position: fixed;
-	transition: opacity 0.25s ease;
-	z-index: 1029;
-}
-
 .modal {
 	background-color: white;
 	height: fit-content;
@@ -51,8 +52,8 @@ button {
 }
 
 .column {
-	flex: 25%;
-	max-width: 25%;
+	flex: 20%;
+	max-width: 20%;
 	padding: 0 4px;
 }
 
@@ -88,6 +89,17 @@ button {
     margin-top: 0;
     font-size: 1.5rem;
 }
+/* Add styles for the label */
+#image-label {
+    display: block; /* Make it a block element */
+    margin-top: 10px; /* Add top margin */
+}
+
+/* Add styles for the input */
+#image {
+    display: block; /* Make it a block element */
+    margin-top: 5px; /* Add top margin */
+}
 
 .modal input[type="text"],
 .modal button {
@@ -101,13 +113,13 @@ button {
 }
 
 .modal button {
-    background-color: #007bff;
+    background-color: rgb(162, 75, 162);
     color: #fff;
     cursor: pointer;
 }
 
 .modal button:hover {
-    background-color: #0056b3;
+    background-color: purple;
 }
 
 /* Image preview styles */
@@ -120,7 +132,7 @@ button {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgba(39, 39, 39, 0.2);
 }
 
 /* Additional supply styles */
@@ -152,26 +164,8 @@ button {
     margin-bottom: 10px; /* Add some bottom margin */
 }
 
-/* Add styles for the label */
-#image-label {
-    display: block; /* Make it a block element */
-    margin-top: 10px; /* Add top margin */
-}
-
-/* Add styles for the input */
-#image {
-    display: block; /* Make it a block element */
-    margin-top: 5px; /* Add top margin */
-}
 
 
-
-@media (max-width: 800px) {
-	.column {
-		flex: 50%;
-		max-width: 50%;
-	}
-}
 
 @media (max-width: 600px) {
 	.column {
