@@ -28,6 +28,28 @@ document.addEventListener("DOMContentLoaded", () => {
             reader.readAsDataURL(file);
         }
     });
+	function refreshCraftsList(data) {
+		// Update crafts list with new data
+		const craftsList = document.getElementById("crafts");
+		craftsList.innerHTML = "";
+	
+		data.forEach(craft => {
+			// Create craft card
+			const craftCard = document.createElement("div");
+			craftCard.classList.add("craft-card");
+	
+			// Create image element
+			const img = document.createElement("img");
+			img.src = "https://assignment14-hfqa.onrender.com" + craft.image; // Prepend base URL here
+			img.alt = craft.name;
+	
+			// Append image to craft card
+			craftCard.appendChild(img);
+	
+			// Append craft card to crafts list
+			craftsList.appendChild(craftCard);
+		});
+	}
 
     addCraftForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -53,28 +75,5 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error("Error adding craft:", error));
     });
-
-    function refreshCraftsList(data) {
-        // Update crafts list with new data
-        const craftsList = document.getElementById("crafts");
-        craftsList.innerHTML = "";
-
-        data.forEach(craft => {
-            // Create craft card
-            const craftCard = document.createElement("div");
-            craftCard.classList.add("craft-card");
-
-            // Create image element
-            const img = document.createElement("img");
-            img.src = "https://assignment14-fsck.onrender.com" + craft.image;
-            img.alt = craft.name;
-
-            // Append image to craft card
-            craftCard.appendChild(img);
-
-            // Append craft card to crafts list
-            craftsList.appendChild(craftCard);
-        });
-    }
 });
 

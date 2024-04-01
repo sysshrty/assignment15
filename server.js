@@ -25,13 +25,13 @@ const crafts = [
     {
         _id: 1,
         name: "Beaded JellyFish",
-        image: "images/bead-jellyfish.jpg",
+        image: "bead-jellyfish.jpg",
         description: "Create a hanging jellyfish using egg cartons and multicolored beads",
         supplies: ["string", "egg cartons", "beads"],
     },
     {
         _id: 2,
-        name: "Character Bookmarks",
+        name: "images/Character Bookmarks",
         image: "bookmarks.jpeg",
         description: "Create a little birdy bookmark to always remin you were you were",
         supplies: ["yellow construction paper", "orange construction paper", "black construction paper"],
